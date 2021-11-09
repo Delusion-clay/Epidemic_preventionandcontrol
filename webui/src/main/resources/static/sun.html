@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>舆情分析</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <link rel="stylesheet" href="css/comon0.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/sun.css">
+</head>
+<script>
+    $(window).load(function () {
+        $(".loading").fadeOut();
+        window.addEventListener("scroll", e => {
+            if (document.documentElement.scrollTop > window.innerHeight * 0.5) {
+                e.preventDefault();
+                console.log(window.innerHeight)
+                //document.documentElement.scrollTop=window.innerHeight*0.5;
+            }
+        });
+    })
+
+    /****/
+    $(document).ready(function () {
+        var whei = $(window).width()
+        $("html").css({fontSize: whei / 20})
+        $(window).resize(function () {
+            var whei = $(window).width()
+            $("html").css({fontSize: whei / 20})
+        });
+    });
+</script>
+<script type="text/javascript" src="js/echarts.min.js"></script>
+<script language="JavaScript" src="js/js.js"></script>
+
+<body>
+<div class="canvas" style="opacity: .8;z-index: 0">
+    <iframe frameborder="0" src="js/bei.html" style="width: 100%; height: 800px;"></iframe>
+</div>
+<div class="loading">
+    <div class="loadbox"><img src="picture/loading.gif"> 页面加载中...</div>
+</div>
+<div class="head">
+    <div class="left nav">
+        <ul>
+            <li><a href="index.html">全国疫情</a></li>
+            <!--            <li><a href="#">城市疫情</a> </li>-->
+            <!--            <li><a href="#">趋势分析</a> </li>-->
+            <li class="nav_active"><a href="./sun.html">舆情分析</a></li>
+        </ul>
+    </div>
+    <h1>实时疫情大数据平台</h1>
+    <div class="weather">
+        <span id="showTime"></span>
+    </div>
+
+    <script>
+        var t = null;
+        t = setTimeout(time, 1000);//開始运行
+        function time() {
+            clearTimeout(t);//清除定时器
+            dt = new Date();
+            var y = dt.getFullYear();
+            var mt = dt.getMonth() + 1;
+            var day = dt.getDate();
+            var h = dt.getHours();//获取时
+            var m = dt.getMinutes();//获取分
+            var s = dt.getSeconds();//获取秒
+            document.getElementById("showTime").innerHTML = y + "年" + mt + "月" + day + "-" + h + "时" + m + "分" + s + "秒";
+            t = setTimeout(time, 1000); //设定定时器，循环运行
+        }
+
+    </script>
+</div>
+<div class="sun">
+    <div id="sun"></div>
+</div>
+
+<div class="gradient" id="gradient">
+    <script>
+        var chartDom = document.getElementById('gradient');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        var data = [["2021-01", 116], ["2021-02", 129], ["2021-03", 135], ["2021-04", 86], ["2021-05", 86]];
+        var data2 = [["2021-01", 10], ["2021-02", 43], ["2021-03", 54], ["2021-04", 86], ["2021-05", 66]];
+
+        var dateList = data.map(function (item) {
+            return item[0];
+        });
+        var valueList = data.map(function (item) {
+            return item[1];
+        });
+        var dateList2 = data2.map(function (item) {
+            return item[0];
+        });
+        var valueList2 = data2.map(function (item) {
+            return item[1];
+        });
+
+        option = {
+
+            visualMap: [{
+                show: false,
+                type: 'continuous',
+                seriesIndex: 0,
+                min: 0,
+                max: 400
+            }, {
+                show: false,
+                type: 'continuous',
+                seriesIndex: 1,
+                dimension: 0,
+                min: 0,
+                max: dateList.length - 1
+            }],
+
+
+            title: [{
+                left: 'center',
+                text: '积极分布',
+                textStyle: {
+                    color: '#fff'
+                }
+            }, {
+                top: '50%',
+                left: 'center',
+                text: '消极分布',
+                textStyle: {
+                    color: '#fff'
+                }
+            }],
+            tooltip: {
+                trigger: 'axis'
+            },
+            xAxis: [{
+                data: dateList,
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
+                    }
+                }
+            }, {
+                data: dateList2,
+                gridIndex: 1,
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
+                    }
+                }
+            }],
+            yAxis: [{
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
+                    }
+                }
+            }, {
+                gridIndex: 1,
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
+                    }
+                }
+            }],
+            grid: [{
+                bottom: '60%'
+            }, {
+                top: '60%'
+            }],
+            series: [{
+                type: 'line',
+                showSymbol: false,
+                data: valueList
+            }, {
+                type: 'line',
+                showSymbol: false,
+                data: valueList2,
+                xAxisIndex: 1,
+                yAxisIndex: 1
+            }]
+        };
+
+        option && myChart.setOption(option);
+    </script>
+</div>
+
+<div class="arousel" id="arousel">
+    <div class="alltitle">疫情实况</div>
+    <div class="wrap" id="wrap">
+        <ul id="comment1">
+            <li>
+                <p>英媒：新冠疫情令中国在斯里兰卡的影响力增强</p>
+            </li>
+            <li>
+                <p>在泰中国公民：能在海外接种中国疫苗，很自豪</p>
+            </li>
+            <li>
+                <p>安徽发布高考疫情防控最新要求</p>
+            </li>
+            <li>
+                <p>广东新冠疫苗接种超4000万剂次全程接种人数超1000万人</p>
+            </li>
+            <li>
+                <p>河北：6月底前，所有建筑工地从业人员全部完成疫苗接种</p>
+            </li>
+            <li>
+                <p>河北发布高考疫情防控提示</p>
+            </li>
+            <li>
+                <p>香港经民联倡工商界向已接种疫苗市民提供免费机票等优惠</p>
+            </li>
+            <li>
+                <p>北京秦皇岛企业商会慰问疫苗接种点医护工作者</p>
+            </li>
+        </ul>
+        <ul id="comment2"></ul>
+    </div>
+</div>
+<script type="text/javascript">
+    window.onload = roll(40);
+
+    function roll(t) {
+        var ul1 = document.getElementById("comment1");
+        var ul2 = document.getElementById("comment2");
+        var ulbox = document.getElementById("wrap");
+        ul2.innerHTML = ul1.innerHTML;
+        ulbox.scrollTop = 0; // 开始无滚动时设为0
+        var timer = setInterval(rollStart, t); // 设置定时器，参数t用在这为间隔时间（单位毫秒），参数t越小，滚动速度越快
+        // 鼠标移入div时暂停滚动
+        ulbox.onmouseover = function () {
+            clearInterval(timer);
+        }
+        // 鼠标移出div后继续滚动
+        ulbox.onmouseout = function () {
+            timer = setInterval(rollStart, t);
+        }
+    }
+
+    // 开始滚动函数
+    function rollStart() {
+        // 上面声明的DOM对象为局部对象需要再次声明
+        var ul1 = document.getElementById("comment1");
+        var ul2 = document.getElementById("comment2");
+        var ulbox = document.getElementById("wrap");
+        // 正常滚动不断给scrollTop的值+1,当滚动高度大于列表内容高度时恢复为0
+        if (ulbox.scrollTop >= ul1.scrollHeight) {
+            ulbox.scrollTop = 0;
+        } else {
+            ulbox.scrollTop++;
+        }
+    }
+</script>
+<script type="text/javascript" src="js/sun.js"></script>
+</body>
+</html>

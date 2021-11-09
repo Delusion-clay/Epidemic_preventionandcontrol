@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>实时疫情大数据平台</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <link rel="stylesheet" href="css/comon0.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<script>
+    $(window).load(function () {
+        $(".loading").fadeOut();
+        window.addEventListener("scroll",e=>{
+            if(document.documentElement.scrollTop>window.innerHeight*0.5){
+                e.preventDefault();
+                console.log(window.innerHeight)
+            //document.documentElement.scrollTop=window.innerHeight*0.5;
+        }
+        });
+    })
+
+    /****/
+    $(document).ready(function () {
+        var whei = $(window).width()
+        $("html").css({ fontSize: whei / 20 })
+        $(window).resize(function () {
+            var whei = $(window).width()
+            $("html").css({ fontSize: whei / 20 })
+        });
+    });
+</script>
+<script type="text/javascript" src="js/echarts.min.js"></script>
+<!-- <script language="JavaScript" src="js/bar.js"></script> -->
+<script language="JavaScript" src="js/js.js"></script>
+
+<body>
+<div class="canvas" style="opacity: .4;z-index: 0">
+    <iframe frameborder="0" src="js/index.html" style="width: 100%; height: 800px"></iframe>
+</div>
+<div class="loading">
+    <div class="loadbox"> <img src="picture/loading.gif"> 页面加载中... </div>
+</div>
+<div class="head">
+    <div class="left nav">
+        <ul>
+            <li class="nav_active"><a href="index.html">全国疫情</a> </li>
+<!--            <li><a href="#">城市疫情</a> </li>-->
+<!--            <li><a href="#">趋势分析</a> </li>-->
+            <li><a href="./sun.html">舆情分析</a> </li>
+        </ul>
+    </div>
+    <h1>实时疫情大数据平台</h1>
+    <div class="weather">
+        <span id="showTime"></span>
+    </div>
+
+    <script>
+        var t = null;
+        t = setTimeout(time, 1000);//開始运行
+        function time() {
+            clearTimeout(t);//清除定时器
+            dt = new Date();
+            var y = dt.getFullYear();
+            var mt = dt.getMonth() + 1;
+            var day = dt.getDate();
+            var h = dt.getHours();//获取时
+            var m = dt.getMinutes();//获取分
+            var s = dt.getSeconds();//获取秒
+            document.getElementById("showTime").innerHTML = y + "年" + mt + "月" + day + "-" + h + "时" + m + "分" + s + "秒";
+            t = setTimeout(time, 1000); //设定定时器，循环运行
+        }
+
+    </script>
+</div>
+<!-- 全国疫情表单 -->
+<div class="con_div">
+    <div class="con_div_text left">
+        <div class="con_div_text01 left">
+            <img src="./images/info_2.png" class="left text01_img" />
+            <div class="left text01_div">
+                <p>统计时间</p>
+                <p id="datetime">235</p>
+            </div>
+        </div>
+        <div class="con_div_text01 right">
+<!--            <img src="./images/info_2.png" class="left text01_img" />-->
+<!--            <div class="left text01_div">-->
+<!--                <p>统计时间</p>-->
+<!--                <p id="datetime">235</p>-->
+<!--            </div>-->
+            <img src="./images/info_1.png" class="left text01_img" />
+            <div class="left text01_div">
+                <p>现存确诊</p>
+                <p class="que">1235</p>
+            </div>
+        </div>
+    </div>
+    <div class="con_div_text left">
+        <div class="con_div_text01 left">
+            <img src="./images/info_3.png" class="left text01_img" />
+            <div class="left text01_div">
+                <p>现存疑似</p>
+                <p class="sky" id="suspectedCount">12356</p>
+            </div>
+        </div>
+        <div class="con_div_text01 right">
+            <img src="./images/info_4.png" class="left text01_img" />
+            <div class="left text01_div">
+                <p>累计确诊</p>
+                <p class="sky" id="confirmedCount">12356</p>
+            </div>
+        </div>
+    </div>
+    <div class="con_div_text left">
+        <div class="con_div_text01 left">
+            <img src="./images/info_5.png" class="left text01_img" />
+            <div class="left text01_div">
+                <p>累计死亡</p>
+                <p class="org" id="deadCount">12356</p>
+            </div>
+        </div>
+        <div class="con_div_text01 right">
+            <img src="./images/info_6.png" class="left text01_img" />
+            <div class="left text01_div">
+                <p>累计治愈</p>
+                <p class="org" id="curedCount">12356</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mainbox">
+    <ul class="clearfix">
+        <li>
+            <div class="boxall" style="height: 5.2rem">
+                <div class="alltitle">救援物资</div>
+                <div class="allnav" id="echart1"></div>
+                <div class="boxfoot"></div>
+            </div>
+            <div class="boxall" style="height: 4.2rem">
+                <div class="alltitle">境外输入TOP10</div>
+                <div class="allnav" id="echart2"></div>
+                <div class="boxfoot"></div>
+            </div>
+        </li>
+        <li>
+            <div class="map">
+                <div class="map1"><img src="picture/lbx.png"></div>
+                <div class="map2"><img src="picture/jt.png"></div>
+                <div class="map3"><img src="picture/map.png"></div>
+                <div class="map4" id="map_1" style="z-index: 111"></div>
+            </div>
+        </li>
+        <li>
+            <div class="boxall" style="height:5.2rem">
+                <div class="alltitle">疫情趋势</div>
+                <div class="allnav" id="echart4"></div>
+                <div class="boxfoot"></div>
+            </div>
+            <div class="boxall" style="height: 4.2rem">
+                <div class="alltitle">累计确诊TOP10</div>
+                <div class="allnav" id="echart5"></div>
+                <div class="boxfoot"></div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="back"></div>
+
+<script type="text/javascript" src="js/china.js"></script>
+<script type="text/javascript" src="js/area.js"></script>
+</body>
+
+</html>
